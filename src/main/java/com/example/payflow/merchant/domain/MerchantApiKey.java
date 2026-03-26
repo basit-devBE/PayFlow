@@ -30,8 +30,13 @@ public class MerchantApiKey {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Column(nullable = false)
+    private Instant expiresAt;
+
     @Column
     private Instant lastUsedAt;
+
+    private static final long KEY_TTL_DAYS = 90;
 
     public static MerchantApiKey create(UUID merchantId, String keyHash) {
         var apiKey = new MerchantApiKey();
@@ -39,6 +44,7 @@ public class MerchantApiKey {
         apiKey.keyHash = keyHash;
         apiKey.active = true;
         apiKey.createdAt = Instant.now();
+        apiKey.expiresAt = Instant.now().plus(KEY_TTL_DAYS, java.time.temporal.ChronoUnit.DAYS);
         return apiKey;
     }
 

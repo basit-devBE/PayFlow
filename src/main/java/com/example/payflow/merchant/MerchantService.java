@@ -33,11 +33,20 @@ public class MerchantService {
         var merchant = Merchant.create(request.name(), request.email());
         merchantRepository.save(merchant);
 
-        var rawKey = generateRawKey();
-        var keyHash = hashKey(rawKey);
-        apiKeyRepository.save(MerchantApiKey.create(merchant.getId(), keyHash));
-
+        var rawKey = issueApiKey(merchant.getId());
         return new RegisterMerchantResponse(merchant.getId(), merchant.getEmail(), rawKey);
+    }
+
+    public String rotateApiKey(java.util.UUID merchantId) {
+        apiKeyRepository.findByMerchantIdAndActiveTrue(merchantId)
+                .ifPresent(MerchantApiKey::revoke);
+        return issueApiKey(merchantId);
+    }
+
+    private String issueApiKey(java.util.UUID merchantId) {
+        var rawKey = generateRawKey();
+        apiKeyRepository.save(MerchantApiKey.create(merchantId, hashKey(rawKey)));
+        return rawKey;
     }
 
     private String generateRawKey() {

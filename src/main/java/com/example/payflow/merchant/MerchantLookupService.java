@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -17,7 +18,7 @@ public class MerchantLookupService {
 
     @Transactional
     public Optional<MerchantIdentity> findByApiKeyHash(String keyHash) {
-        return apiKeyRepository.findByKeyHashAndActiveTrue(keyHash)
+        return apiKeyRepository.findByKeyHashAndActiveTrueAndExpiresAtAfter(keyHash, Instant.now())
                 .flatMap(apiKey -> {
                     apiKey.recordUsage();
                     return merchantRepository.findById(apiKey.getMerchantId())
