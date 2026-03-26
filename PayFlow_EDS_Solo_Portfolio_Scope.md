@@ -53,6 +53,7 @@ This is a strong portfolio project because it demonstrates:
 | **Ledger** | Record double-entry journal entries when a payment is approved |
 | **Notifications** | Log a notification (console or email via a mock/stub) |
 | **Audit Log** | Append-only record of all events (immutable, append-only table) |
+| **Identity / Security** | OAuth2 Resource Server integration for secure API access |
 
 ### ❌ Cut (Too Complex for One Person)
 
@@ -61,7 +62,6 @@ This is a strong portfolio project because it demonstrates:
 | Apache Kafka | Overkill solo; use Spring's internal event bus instead |
 | Redis / distributed locking | No distributed system, so not needed |
 | Reconciliation module | Requires settlement file integration — skip for now |
-| Identity / OAuth2 module | Use simple static API key or Basic Auth for portfolio |
 | Kubernetes / Helm / ArgoCD | Use Docker Compose for local dev; deploy to Railway or Render |
 | Gatling load tests | Target 2,000 TPS is a team/production goal — not needed here |
 | PCI-DSS compliance | Real compliance requires a team + QSA; note it as "inspired by" |
@@ -136,7 +136,7 @@ POST /api/v1/payments
 | REST API | Spring Web MVC | Synchronous endpoints |
 | Database | PostgreSQL 16 | Or H2 in-memory for tests |
 | ORM | Spring Data JPA + Hibernate 6 | Per-module schemas |
-| Security | Spring Security (API key or Basic Auth) | Keep it simple |
+| Security | Spring Security + OAuth2 Resource Server | JWT-based token validation |
 | Build | Maven (multi-module) | One parent POM, one module per domain |
 | Containers | Docker + Docker Compose | For local PostgreSQL |
 
@@ -255,7 +255,7 @@ Use **Flyway** for versioned migrations — one migrations folder per schema.
 `http://localhost:8080/api/v1`
 
 ### Authentication
-Simple API key via header: `X-API-Key: <key>` configured in `application.yml`.
+OAuth2 (JWT) Bearer token via header: `Authorization: Bearer <token>`. Configure JWK Set URI in `application.yml`.
 
 ### Endpoints
 
