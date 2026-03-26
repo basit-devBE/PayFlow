@@ -16,8 +16,8 @@ public class ApiResponse<T> {
         this.statusCode = status.value();
     }
 
-    public static <T> ApiResponse<T> success(T data, HttpStatus status) {
-        return new ApiResponse<>(data, null, status);
+    public static <T> ApiResponse<T> success(T data, String message, HttpStatus status) {
+        return new ApiResponse<>(data, message, status);
     }
 
     public static <T> ApiResponse<T> error(String message, HttpStatus status) {

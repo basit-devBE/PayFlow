@@ -1,6 +1,7 @@
 package com.example.payflow.merchant;
 
 import com.example.payflow.merchant.api.response.RegisterMerchantResponse;
+import com.example.payflow.merchant.service.MerchantService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

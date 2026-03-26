@@ -1,4 +1,4 @@
-package com.example.payflow.merchant;
+package com.example.payflow.merchant.service;
 
 import com.example.payflow.merchant.infra.MerchantApiKeyRepository;
 import com.example.payflow.merchant.infra.MerchantRepository;
@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +27,5 @@ public class MerchantLookupService {
                 });
     }
 
-    public record MerchantIdentity(java.util.UUID merchantId, String email) {}
+    public record MerchantIdentity(UUID merchantId, String email) {}
 }

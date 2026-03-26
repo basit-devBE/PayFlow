@@ -1,6 +1,7 @@
 package com.example.payflow.security;
 
-import com.example.payflow.merchant.MerchantLookupService;
+import com.example.payflow.merchant.service.MerchantLookupService;
+import com.example.payflow.shared.MerchantPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,15 +46,18 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
         }
 
         var keyHash = hashKey(rawKey);
+        log.info("Computed key hash: {}", keyHash);
 
         merchantLookupService.findByApiKeyHash(keyHash)
                 .ifPresentOrElse(
                         identity -> {
+                            log.info("Merchant found for API key hash: {}", keyHash);
                             var principal = new MerchantPrincipal(identity.merchantId(), identity.email());
                             SecurityContextHolder.getContext().setAuthentication(principal);
                         },
                         () -> {}
                 );
+        log.info("Authentication result: {}", SecurityContextHolder.getContext().getAuthentication());
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             rejectUnauthorized(response);

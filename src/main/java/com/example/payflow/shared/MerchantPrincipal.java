@@ -1,4 +1,4 @@
-package com.example.payflow.security;
+package com.example.payflow.shared;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

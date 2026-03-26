@@ -1,5 +1,6 @@
-package com.example.payflow.merchant;
+package com.example.payflow.merchant.service;
 
+import com.example.payflow.merchant.MerchantAlreadyExistsException;
 import com.example.payflow.merchant.api.request.RegisterMerchantRequest;
 import com.example.payflow.merchant.api.response.RegisterMerchantResponse;
 import com.example.payflow.merchant.domain.Merchant;
@@ -16,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.HexFormat;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,13 +39,13 @@ public class MerchantService {
         return new RegisterMerchantResponse(merchant.getId(), merchant.getEmail(), rawKey);
     }
 
-    public String rotateApiKey(java.util.UUID merchantId) {
+    public String rotateApiKey(UUID merchantId) {
         apiKeyRepository.findByMerchantIdAndActiveTrue(merchantId)
                 .ifPresent(MerchantApiKey::revoke);
         return issueApiKey(merchantId);
     }
 
-    private String issueApiKey(java.util.UUID merchantId) {
+    private String issueApiKey(UUID merchantId) {
         var rawKey = generateRawKey();
         apiKeyRepository.save(MerchantApiKey.create(merchantId, hashKey(rawKey)));
         return rawKey;

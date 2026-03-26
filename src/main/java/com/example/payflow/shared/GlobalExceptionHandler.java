@@ -1,6 +1,5 @@
 package com.example.payflow.shared;
 
-import com.example.payflow.merchant.MerchantAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,8 +8,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MerchantAlreadyExistsException.class)
-    ResponseEntity<ApiResponse<Void>> handleMerchantAlreadyExists(MerchantAlreadyExistsException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    ResponseEntity<ApiResponse<Void>> handleNotFound(NotFoundException ex) {
+        return buildError(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DomainException.class)
+    ResponseEntity<ApiResponse<Void>> handleDomainException(DomainException ex) {
         return buildError(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
