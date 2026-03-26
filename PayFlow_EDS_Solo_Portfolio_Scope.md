@@ -98,7 +98,7 @@ This is a strong portfolio project because it demonstrates:
 ### Event Flow: Payment Lifecycle
 
 ```
-POST /api/v1/payments
+POST /api/v1/payment
         │
 [Payment Module]
   ├─ Validate & persist (status: PENDING)
@@ -184,7 +184,7 @@ public abstract class DomainEvent {
 | `Notification.Sent` | Notifications | Audit |
 
 ### Idempotency (Simplified)
-Use a unique constraint on `idempotency_key` in the `payments.transactions` table. Return the existing result if a duplicate key is submitted — no Redis needed.
+Use a unique constraint on `idempotency_key` in the `payment.transactions` table. Return the existing result if a duplicate key is submitted — no Redis needed.
 
 ---
 
@@ -195,7 +195,7 @@ Each module gets its own PostgreSQL schema. Cross-schema queries are **forbidden
 
 | Module | Schema |
 |---|---|
-| Payments | `payments` |
+| Payments | `payment` |
 | Fraud | `fraud` |
 | Ledger | `ledger` |
 | Notifications | `notifications` |
@@ -205,7 +205,7 @@ Use **Flyway** for versioned migrations — one migrations folder per schema.
 
 ### Key Tables
 
-**`payments.transactions`**
+**`payment.transactions`**
 | Column | Type | Notes |
 |---|---|---|
 | `id` | UUID PK | |
@@ -261,10 +261,10 @@ OAuth2 (JWT) Bearer token via header: `Authorization: Bearer <token>`. Configure
 
 | Method | Path | Description |
 |---|---|---|
-| `POST` | `/payments` | Submit a new payment |
-| `GET` | `/payments/{id}` | Get payment by ID |
-| `GET` | `/payments` | List payments (filter by status) |
-| `GET` | `/payments/{id}/events` | Get full event history for a payment |
+| `POST` | `/payment` | Submit a new payment |
+| `GET` | `/payment/{id}` | Get payment by ID |
+| `GET` | `/payment` | List payment (filter by status) |
+| `GET` | `/payment/{id}/events` | Get full event history for a payment |
 | `GET` | `/ledger/journal/{correlationId}` | Get journal entries for a payment |
 | `GET` | `/fraud/assessments/{transactionId}` | Get fraud result for a transaction |
 | `GET` | `/audit/events` | Query audit log |
@@ -308,7 +308,7 @@ payflow-eds/
 │   └── src/main/java/io/payflow/
 │       └── PayFlowApplication.java
 ├── modules/
-│   ├── payments/                  # payflow.payments module
+│   ├── payment/                  # payflow.payment module
 │   │   └── src/
 │   │       ├── main/java/
 │   │       │   ├── api/           # REST controllers
@@ -323,7 +323,7 @@ payflow-eds/
 │   └── events/                    # Shared event envelope DTOs
 ├── db/
 │   └── migrations/
-│       ├── payments/              # Flyway V1__init.sql etc.
+│       ├── payment/              # Flyway V1__init.sql etc.
 │       ├── fraud/
 │       ├── ledger/
 │       ├── notifications/
@@ -342,7 +342,7 @@ Work through these phases one at a time. Each phase produces a working, committa
 | Phase | Name | Est. Time | Deliverables |
 |---|---|---|---|
 | 0 | **Project Scaffold** | 3–4 days | Maven multi-module POM, Spring Boot app boots, Spring Modulith configured, Docker Compose with PostgreSQL, Flyway running |
-| 1 | **Payment Ingestion** | 1 week | `POST /payments` endpoint, transaction persisted, `Payment.Transaction.Initiated` event fired, idempotency key enforced, basic tests |
+| 1 | **Payment Ingestion** | 1 week | `POST /payment` endpoint, transaction persisted, `Payment.Transaction.Initiated` event fired, idempotency key enforced, basic tests |
 | 2 | **Fraud Detection** | 1 week | Rule engine (hardcoded rules: amount > threshold → flag), `Fraud.Assessment.Completed` event, payment status updated |
 | 3 | **Ledger Module** | 1 week | Double-entry journal entry on `AUTHORISED`, `Ledger.Entry.Posted` event, journal query API |
 | 4 | **Notifications & Audit** | 3–4 days | Console/log notification on AUTHORISED and DECLINED, append-only audit log consuming all events |
