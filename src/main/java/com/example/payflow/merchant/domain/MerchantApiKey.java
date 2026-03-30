@@ -21,8 +21,8 @@ public class MerchantApiKey {
     @Column(nullable = false)
     private UUID merchantId;
 
-    @Column(nullable = false, unique = true)
-    private String keyHash;
+    @Column(nullable = false, length = 512)
+    private String encryptedKey;
 
     @Column(nullable = false)
     private boolean active;
@@ -38,10 +38,10 @@ public class MerchantApiKey {
 
     private static final long KEY_TTL_DAYS = 90;
 
-    public static MerchantApiKey create(UUID merchantId, String keyHash) {
+    public static MerchantApiKey create(UUID merchantId, String encryptedKey) {
         var apiKey = new MerchantApiKey();
         apiKey.merchantId = merchantId;
-        apiKey.keyHash = keyHash;
+        apiKey.encryptedKey = encryptedKey;
         apiKey.active = true;
         apiKey.createdAt = Instant.now();
         apiKey.expiresAt = Instant.now().plus(KEY_TTL_DAYS, java.time.temporal.ChronoUnit.DAYS);

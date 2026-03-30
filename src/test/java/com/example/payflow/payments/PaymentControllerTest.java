@@ -3,6 +3,7 @@ package com.example.payflow.payments;
 import com.example.payflow.merchant.service.MerchantLookupService;
 import com.example.payflow.payments.api.response.PaymentResponse;
 import com.example.payflow.payments.service.PaymentService;
+import com.example.payflow.security.HmacSignatureVerifier;
 import com.example.payflow.shared.MerchantPrincipal;
 import com.example.payflow.shared.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class PaymentControllerTest {
 
-    private static final String TEST_API_KEY = "test-api-key";
+    private static final String TIMESTAMP = String.valueOf(Instant.now().getEpochSecond());
+    private static final String SIGNATURE  = "test-signature";
     private static final UUID MERCHANT_ID = UUID.randomUUID();
     private static final UUID PAYMENT_ID = UUID.randomUUID();
 
@@ -44,10 +47,15 @@ class PaymentControllerTest {
     @MockitoBean
     MerchantLookupService merchantLookupService;
 
+    @MockitoBean
+    HmacSignatureVerifier signatureVerifier;
+
     @BeforeEach
     void setUp() {
-        when(merchantLookupService.findByApiKeyHash(any()))
-                .thenReturn(java.util.Optional.of(new MerchantLookupService.MerchantIdentity(MERCHANT_ID, "merchant@example.com")));
+        when(signatureVerifier.isTimestampStale(any())).thenReturn(false);
+        when(signatureVerifier.verify(any(), any(), any(), any())).thenReturn(true);
+        when(merchantLookupService.findActiveKeyByMerchantId(any()))
+                .thenReturn(Optional.of(new MerchantLookupService.MerchantIdentity(MERCHANT_ID, "merchant@example.com", "test-key-hash")));
     }
 
     private PaymentResponse sampleResponse() {
@@ -68,7 +76,9 @@ class PaymentControllerTest {
         when(paymentService.findByMerchant(MERCHANT_ID, null)).thenReturn(List.of(sampleResponse()));
 
         mockMvc.perform(get("/api/v1/payments")
-                        .header("X-API-Key", TEST_API_KEY))
+                        .header("X-Merchant-ID", MERCHANT_ID.toString())
+                        .header("X-Timestamp", TIMESTAMP)
+                        .header("X-Signature", SIGNATURE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].id").value(PAYMENT_ID.toString()));
     }
@@ -78,7 +88,9 @@ class PaymentControllerTest {
         when(paymentService.findByMerchant(MERCHANT_ID, PaymentStatus.PENDING)).thenReturn(List.of(sampleResponse()));
 
         mockMvc.perform(get("/api/v1/payments")
-                        .header("X-API-Key", TEST_API_KEY)
+                        .header("X-Merchant-ID", MERCHANT_ID.toString())
+                        .header("X-Timestamp", TIMESTAMP)
+                        .header("X-Signature", SIGNATURE)
                         .param("status", "PENDING"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].status").value("PENDING"));
@@ -89,7 +101,9 @@ class PaymentControllerTest {
         when(paymentService.submit(eq(MERCHANT_ID), any())).thenReturn(sampleResponse());
 
         mockMvc.perform(post("/api/v1/payments")
-                        .header("X-API-Key", TEST_API_KEY)
+                        .header("X-Merchant-ID", MERCHANT_ID.toString())
+                        .header("X-Timestamp", TIMESTAMP)
+                        .header("X-Signature", SIGNATURE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -113,7 +127,9 @@ class PaymentControllerTest {
         when(paymentService.submit(eq(MERCHANT_ID), any())).thenReturn(sampleResponse());
 
         mockMvc.perform(post("/api/v1/payments")
-                        .header("X-API-Key", TEST_API_KEY)
+                        .header("X-Merchant-ID", MERCHANT_ID.toString())
+                        .header("X-Timestamp", TIMESTAMP)
+                        .header("X-Signature", SIGNATURE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -135,7 +151,9 @@ class PaymentControllerTest {
         when(paymentService.findById(PAYMENT_ID)).thenReturn(sampleResponse());
 
         mockMvc.perform(get("/api/v1/payments/{id}", PAYMENT_ID)
-                        .header("X-API-Key", TEST_API_KEY))
+                        .header("X-Merchant-ID", MERCHANT_ID.toString())
+                        .header("X-Timestamp", TIMESTAMP)
+                        .header("X-Signature", SIGNATURE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(PAYMENT_ID.toString()));
     }
@@ -145,7 +163,9 @@ class PaymentControllerTest {
         when(paymentService.findById(PAYMENT_ID)).thenThrow(new PaymentNotFoundException(PAYMENT_ID));
 
         mockMvc.perform(get("/api/v1/payments/{id}", PAYMENT_ID)
-                        .header("X-API-Key", TEST_API_KEY))
+                        .header("X-Merchant-ID", MERCHANT_ID.toString())
+                        .header("X-Timestamp", TIMESTAMP)
+                        .header("X-Signature", SIGNATURE))
                 .andExpect(status().isNotFound());
     }
 }

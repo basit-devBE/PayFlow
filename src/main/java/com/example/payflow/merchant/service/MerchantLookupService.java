@@ -2,6 +2,7 @@ package com.example.payflow.merchant.service;
 
 import com.example.payflow.merchant.infra.MerchantApiKeyRepository;
 import com.example.payflow.merchant.infra.MerchantRepository;
+import com.example.payflow.security.ApiKeyEncryption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +17,18 @@ public class MerchantLookupService {
 
     private final MerchantApiKeyRepository apiKeyRepository;
     private final MerchantRepository merchantRepository;
+    private final ApiKeyEncryption encryption;
 
     @Transactional
-    public Optional<MerchantIdentity> findByApiKeyHash(String keyHash) {
-        return apiKeyRepository.findByKeyHashAndActiveTrueAndExpiresAtAfter(keyHash, Instant.now())
+    public Optional<MerchantIdentity> findActiveKeyByMerchantId(UUID merchantId) {
+        return apiKeyRepository.findByMerchantIdAndActiveTrueAndExpiresAtAfter(merchantId, Instant.now())
                 .flatMap(apiKey -> {
                     apiKey.recordUsage();
+                    var rawKey = encryption.decrypt(apiKey.getEncryptedKey());
                     return merchantRepository.findById(apiKey.getMerchantId())
-                            .map(merchant -> new MerchantIdentity(merchant.getId(), merchant.getEmail()));
+                            .map(merchant -> new MerchantIdentity(merchant.getId(), merchant.getEmail(), rawKey));
                 });
     }
 
-    public record MerchantIdentity(UUID merchantId, String email) {}
+    public record MerchantIdentity(UUID merchantId, String email, String rawKey) {}
 }

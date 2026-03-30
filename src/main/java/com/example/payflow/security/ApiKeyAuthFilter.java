@@ -13,20 +13,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.HexFormat;
+import java.util.UUID;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
 
-    private static final String API_KEY_HEADER = "X-API-Key";
-    private static final String REGISTER_PATH = "/api/v1/merchants/register";
+    private static final String HEADER_MERCHANT_ID = "X-Merchant-ID";
+    private static final String HEADER_TIMESTAMP   = "X-Timestamp";
+    private static final String HEADER_SIGNATURE   = "X-Signature";
+    private static final String REGISTER_PATH      = "/api/v1/merchants/register";
 
     private final MerchantLookupService merchantLookupService;
+    private final HmacSignatureVerifier signatureVerifier;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -37,50 +37,56 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        var rawKey = request.getHeader(API_KEY_HEADER);
-        log.info("Received Api key: {}", rawKey);
+        var wrapped = new CachedBodyRequestWrapper(request);
 
-        if (rawKey == null || rawKey.isBlank()) {
+        var merchantIdHeader = wrapped.getHeader(HEADER_MERCHANT_ID);
+        var timestamp        = wrapped.getHeader(HEADER_TIMESTAMP);
+        var signature        = wrapped.getHeader(HEADER_SIGNATURE);
+
+        if (isMissing(merchantIdHeader) || isMissing(timestamp) || isMissing(signature)) {
             rejectUnauthorized(response);
             return;
         }
 
-        var keyHash = hashKey(rawKey);
-        log.info("Computed key hash: {}", keyHash);
+        if (signatureVerifier.isTimestampStale(timestamp)) {
+            rejectUnauthorized(response);
+            return;
+        }
 
-        merchantLookupService.findByApiKeyHash(keyHash)
-                .ifPresentOrElse(
-                        identity -> {
-                            log.info("Merchant found for API key hash: {}", keyHash);
-                            var principal = new MerchantPrincipal(identity.merchantId(), identity.email());
-                            SecurityContextHolder.getContext().setAuthentication(principal);
-                        },
-                        () -> {}
-                );
-        log.info("Authentication result: {}", SecurityContextHolder.getContext().getAuthentication());
+        UUID merchantId;
+        try {
+            merchantId = UUID.fromString(merchantIdHeader);
+        } catch (IllegalArgumentException e) {
+            rejectUnauthorized(response);
+            return;
+        }
+
+        var body = new String(wrapped.getBody(), java.nio.charset.StandardCharsets.UTF_8);
+
+        merchantLookupService.findActiveKeyByMerchantId(merchantId)
+                .ifPresent(identity -> {
+                    if (signatureVerifier.verify(identity.rawKey(), timestamp, body, signature)) {
+                        SecurityContextHolder.getContext()
+                                .setAuthentication(new MerchantPrincipal(identity.merchantId(), identity.email()));
+                    }
+                });
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             rejectUnauthorized(response);
             return;
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(wrapped, response);
+    }
+
+    private boolean isMissing(String value) {
+        return value == null || value.isBlank();
     }
 
     private void rejectUnauthorized(HttpServletResponse response) throws IOException {
         SecurityContextHolder.clearContext();
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write("{\"status\":401,\"detail\":\"Missing or invalid API key\"}");
-    }
-
-    private String hashKey(String rawKey) {
-        try {
-            var digest = MessageDigest.getInstance("SHA-256");
-            var hashBytes = digest.digest(rawKey.getBytes(StandardCharsets.UTF_8));
-            return HexFormat.of().formatHex(hashBytes);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("SHA-256 not available", e);
-        }
+        response.getWriter().write("{\"status\":401,\"detail\":\"Missing, invalid, or expired request signature\"}");
     }
 }

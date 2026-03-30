@@ -1,4 +1,4 @@
-CREATE TABLE payments.payment
+CREATE TABLE IF NOT EXISTS payments.payment
 (
     id                  UUID         NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
     correlation_id      UUID         NOT NULL,

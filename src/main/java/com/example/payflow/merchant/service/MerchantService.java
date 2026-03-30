@@ -7,16 +7,14 @@ import com.example.payflow.merchant.domain.Merchant;
 import com.example.payflow.merchant.domain.MerchantApiKey;
 import com.example.payflow.merchant.infra.MerchantApiKeyRepository;
 import com.example.payflow.merchant.infra.MerchantRepository;
+import com.example.payflow.payments.infra.PaymentRepository;
+import com.example.payflow.security.ApiKeyEncryption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.HexFormat;
 import java.util.UUID;
 
 @Service
@@ -26,6 +24,7 @@ public class MerchantService {
 
     private final MerchantRepository merchantRepository;
     private final MerchantApiKeyRepository apiKeyRepository;
+    private final ApiKeyEncryption encryption;
 
     public RegisterMerchantResponse register(RegisterMerchantRequest request) {
         if (merchantRepository.findByEmail(request.email()).isPresent()) {
@@ -47,7 +46,8 @@ public class MerchantService {
 
     private String issueApiKey(UUID merchantId) {
         var rawKey = generateRawKey();
-        apiKeyRepository.save(MerchantApiKey.create(merchantId, hashKey(rawKey)));
+        var encryptedKey = encryption.encrypt(rawKey);
+        apiKeyRepository.save(MerchantApiKey.create(merchantId, encryptedKey));
         return rawKey;
     }
 
@@ -55,15 +55,5 @@ public class MerchantService {
         var bytes = new byte[32];
         new SecureRandom().nextBytes(bytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
-    }
-
-    private String hashKey(String rawKey) {
-        try {
-            var digest = MessageDigest.getInstance("SHA-256");
-            var hashBytes = digest.digest(rawKey.getBytes(StandardCharsets.UTF_8));
-            return HexFormat.of().formatHex(hashBytes);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("SHA-256 not available", e);
-        }
     }
 }
