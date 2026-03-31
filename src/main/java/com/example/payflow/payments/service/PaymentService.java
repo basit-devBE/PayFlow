@@ -69,6 +69,29 @@ public class PaymentService {
                 .orElseThrow(() -> new PaymentNotFoundException(id));
     }
 
+    @Transactional
+    public void processFraudAssessment(UUID paymentId, String decision, String correlationId) {
+        var payment = paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new PaymentNotFoundException(paymentId));
+        
+        if ("APPROVE".equals(decision)) {
+            payment.authorise();
+            paymentRepository.save(payment);
+            eventPublisher.publish(new com.example.payflow.shared.events.PaymentTransactionAuthorized(
+                    correlationId,
+                    payment.getId(),
+                    payment.getMerchantId(),
+                    payment.getPayeeAccountId(),
+                    payment.getAmount(),
+                    payment.getCurrency()));
+        } else {
+            payment.decline();
+            paymentRepository.save(payment);
+            eventPublisher.publish(new com.example.payflow.shared.events.PaymentTransactionDeclined(
+                    correlationId, payment.getId(), payment.getMerchantId(), "Failed fraud assessment"));
+        }
+    }
+
     private PaymentResponse toResponse(Payment payment) {
         return new PaymentResponse(
                 payment.getId(),

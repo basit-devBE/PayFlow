@@ -7,8 +7,6 @@ import com.example.payflow.merchant.domain.Merchant;
 import com.example.payflow.merchant.domain.MerchantApiKey;
 import com.example.payflow.merchant.infra.MerchantApiKeyRepository;
 import com.example.payflow.merchant.infra.MerchantRepository;
-import com.example.payflow.payments.infra.PaymentRepository;
-import com.example.payflow.security.ApiKeyEncryption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
