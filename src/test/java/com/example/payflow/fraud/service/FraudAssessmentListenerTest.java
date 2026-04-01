@@ -49,6 +49,7 @@ class FraudAssessmentListenerTest {
         var assessment = assessmentCaptor.getValue();
 
         assertThat(assessment.getTransactionId()).isEqualTo(event.getPaymentId());
+        assertThat(assessment.getMerchantId()).isEqualTo(event.getMerchantId());
         assertThat(assessment.getDecision()).isEqualTo(FraudDecision.APPROVE);
         assertThat(assessment.getScore()).isEqualTo(100);
 
@@ -58,6 +59,7 @@ class FraudAssessmentListenerTest {
 
         assertThat(completed.getCorrelationId()).isEqualTo(event.getCorrelationId());
         assertThat(completed.getTransactionId()).isEqualTo(event.getPaymentId());
+        assertThat(completed.getMerchantId()).isEqualTo(event.getMerchantId());
         assertThat(completed.getDecision()).isEqualTo("APPROVE");
         assertThat(completed.getScore()).isEqualTo(100);
     }

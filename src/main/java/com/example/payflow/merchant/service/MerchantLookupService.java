@@ -29,5 +29,10 @@ public class MerchantLookupService {
                 });
     }
 
+    @Transactional(readOnly = true)
+    public Optional<String> findEmailByMerchantId(UUID merchantId) {
+        return merchantRepository.findById(merchantId).map(merchant -> merchant.getEmail());
+    }
+
     public record MerchantIdentity(UUID merchantId, String email, String rawKey) {}
 }

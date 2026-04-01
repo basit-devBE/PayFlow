@@ -22,6 +22,9 @@ public class FraudAssessment {
     private UUID transactionId;
 
     @Column(nullable = false)
+    private UUID merchantId;
+
+    @Column(nullable = false)
     private Integer score;
 
     @Enumerated(EnumType.STRING)
@@ -31,9 +34,10 @@ public class FraudAssessment {
     @Column(nullable = false, updatable = false)
     private Instant assessedAt;
 
-    public static FraudAssessment create(UUID transactionId, Integer score, FraudDecision decision) {
+    public static FraudAssessment create(UUID transactionId, UUID merchantId, Integer score, FraudDecision decision) {
         var assessment = new FraudAssessment();
         assessment.transactionId = transactionId;
+        assessment.merchantId = merchantId;
         assessment.score = score;
         assessment.decision = decision;
         assessment.assessedAt = Instant.now();

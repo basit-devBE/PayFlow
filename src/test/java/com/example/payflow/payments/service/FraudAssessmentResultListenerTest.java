@@ -24,7 +24,7 @@ class FraudAssessmentResultListenerTest {
     void on_delegatesToPaymentService() {
         var correlationId = UUID.randomUUID().toString();
         var transactionId = UUID.randomUUID();
-        var event = new FraudAssessmentCompleted(correlationId, transactionId, 100, "APPROVE");
+        var event = new FraudAssessmentCompleted(correlationId, transactionId, UUID.randomUUID(), 100, "APPROVE");
 
         listener.on(event);
 

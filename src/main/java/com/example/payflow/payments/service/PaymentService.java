@@ -1,5 +1,7 @@
 package com.example.payflow.payments.service;
 
+import com.example.payflow.audit.service.AuditEventResponse;
+import com.example.payflow.audit.service.AuditService;
 import com.example.payflow.payments.PaymentNotFoundException;
 import com.example.payflow.payments.api.request.SubmitPaymentRequest;
 import com.example.payflow.payments.api.response.PaymentResponse;
@@ -23,6 +25,7 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final DomainEventPublisher eventPublisher;
+    private final AuditService auditService;
 
     public PaymentResponse submit(UUID merchantId, SubmitPaymentRequest request) {
         var existing = paymentRepository.findByIdempotencyKey(request.idempotencyKey());
@@ -63,10 +66,17 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public PaymentResponse findById(UUID id) {
-        return paymentRepository.findById(id)
+    public PaymentResponse findById(UUID merchantId, UUID id) {
+        return paymentRepository.findByIdAndMerchantId(id, merchantId)
                 .map(this::toResponse)
                 .orElseThrow(() -> new PaymentNotFoundException(id));
+    }
+
+    @Transactional(readOnly = true)
+    public List<AuditEventResponse> findEvents(UUID merchantId, UUID paymentId) {
+        paymentRepository.findByIdAndMerchantId(paymentId, merchantId)
+                .orElseThrow(() -> new PaymentNotFoundException(paymentId));
+        return auditService.findByMerchantIdAndPaymentId(merchantId, paymentId);
     }
 
     @Transactional

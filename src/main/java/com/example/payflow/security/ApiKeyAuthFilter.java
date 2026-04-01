@@ -37,6 +37,7 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        log.info("Received request: {} {}", request.getMethod(), request.getRequestURI());
         var wrapped = new CachedBodyRequestWrapper(request);
 
         var merchantIdHeader = wrapped.getHeader(HEADER_MERCHANT_ID);

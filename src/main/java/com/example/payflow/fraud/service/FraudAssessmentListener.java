@@ -24,7 +24,7 @@ public class FraudAssessmentListener {
         log.info("Evaluating payment transaction for fraud: {}", event.getPaymentId());
         
         var result = ruleEngine.evaluate(event.getAmount());
-        var assessment = FraudAssessment.create(event.getPaymentId(), result.score(), result.decision());
+        var assessment = FraudAssessment.create(event.getPaymentId(), event.getMerchantId(), result.score(), result.decision());
         
         repository.save(assessment);
         
@@ -33,6 +33,7 @@ public class FraudAssessmentListener {
         publisher.publish(new FraudAssessmentCompleted(
                 event.getCorrelationId(),
                 assessment.getTransactionId(),
+                assessment.getMerchantId(),
                 assessment.getScore(),
                 assessment.getDecision().name()
         ));

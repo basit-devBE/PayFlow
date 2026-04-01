@@ -10,14 +10,16 @@ public class LedgerEntryPosted extends DomainEvent {
 
     private final UUID journalEntryId;
     private final UUID paymentId;
+    private final UUID merchantId;
     private final BigDecimal amount;
     private final String currency;
 
     public LedgerEntryPosted(String correlationId, UUID journalEntryId, UUID paymentId,
-                             BigDecimal amount, String currency) {
+                             UUID merchantId, BigDecimal amount, String currency) {
         super(correlationId);
         this.journalEntryId = journalEntryId;
         this.paymentId = paymentId;
+        this.merchantId = merchantId;
         this.amount = amount;
         this.currency = currency;
     }

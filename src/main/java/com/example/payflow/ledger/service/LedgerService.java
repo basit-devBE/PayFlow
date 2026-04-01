@@ -34,6 +34,7 @@ public class LedgerService {
                 correlationId.toString(),
                 journalEntry.getId(),
                 paymentId,
+                merchantId,
                 amount,
                 currency
         ));
