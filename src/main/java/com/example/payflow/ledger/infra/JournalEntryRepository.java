@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface JournalEntryRepository extends JpaRepository<JournalEntry, UUID> {
-    List<JournalEntry> findByCorrelationIdOrderByPostedAtAsc(UUID correlationId);
+    List<JournalEntry> findByCorrelationIdAndDebitAccountOrderByPostedAtAsc(UUID correlationId, String debitAccount);
     boolean existsByPaymentId(UUID paymentId);
 }

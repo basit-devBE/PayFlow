@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -57,7 +58,7 @@ class LedgerControllerTest {
         var correlationId = UUID.randomUUID();
         var paymentId = UUID.randomUUID();
         var entryId = UUID.randomUUID();
-        when(ledgerService.findByCorrelationId(correlationId)).thenReturn(List.of(
+        when(ledgerService.findByCorrelationId(eq(MERCHANT_ID), eq(correlationId))).thenReturn(List.of(
                 new JournalEntryResponse(
                         entryId,
                         correlationId,

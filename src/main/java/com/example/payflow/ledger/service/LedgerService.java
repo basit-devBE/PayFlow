@@ -41,8 +41,11 @@ public class LedgerService {
     }
 
     @Transactional(readOnly = true)
-    public List<JournalEntryResponse> findByCorrelationId(UUID correlationId) {
-        return journalEntryRepository.findByCorrelationIdOrderByPostedAtAsc(correlationId)
+    public List<JournalEntryResponse> findByCorrelationId(UUID merchantId, UUID correlationId) {
+        return journalEntryRepository.findByCorrelationIdAndDebitAccountOrderByPostedAtAsc(
+                        correlationId,
+                        "merchant:" + merchantId
+                )
                 .stream()
                 .map(entry -> new JournalEntryResponse(
                         entry.getId(),

@@ -660,3 +660,299 @@ Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema valid
 2026-04-01T08:52:23.143Z  INFO 123763 --- [payflow] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
 2026-04-01T08:52:23.837Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
 2026-04-01T08:52:23.846Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Started PayFlowApplication in 3.298 seconds (process running for 3.797)
+2026-04-01T09:09:34.307Z  INFO 123763 --- [payflow] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
+2026-04-01T09:09:34.315Z  INFO 123763 --- [payflow] [Thread-1] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-01T09:09:34.317Z  INFO 123763 --- [payflow] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-01T09:09:34.500Z  INFO 123763 --- [payflow] [Thread-1] .s.m.e.c.DefaultEventPublicationRegistry : No publications outstanding!
+2026-04-01T09:09:34.502Z  INFO 123763 --- [payflow] [Thread-1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T09:09:34.505Z  INFO 123763 --- [payflow] [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-01T09:09:34.509Z  INFO 123763 --- [payflow] [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-01T09:09:34.584Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Starting PayFlowApplication using Java 25.0.1 with PID 123763 (/home/abdul/Desktop/github_projects/Pay-Flow/target/classes started by abdul in /home/abdul/Desktop/github_projects/Pay-Flow)
+2026-04-01T09:09:34.584Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-04-01T09:09:34.704Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-01T09:09:34.719Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12 ms. Found 6 JPA repository interfaces.
+2026-04-01T09:09:34.799Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-01T09:09:34.801Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-01T09:09:34.801Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-01T09:09:34.807Z  INFO 123763 --- [payflow] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 221 ms
+2026-04-01T09:09:34.844Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-01T09:09:34.862Z  INFO 123763 --- [payflow] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-01T09:09:34.864Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-04-01T09:09:34.893Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@79d592d8
+2026-04-01T09:09:34.893Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-04-01T09:09:34.899Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/payflow]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.13
+	Default catalog/schema: payflow/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-01T09:09:35.004Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-01T09:09:35.027Z  INFO 123763 --- [payflow] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T09:09:35.355Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-01T09:09:35.358Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Started PayFlowApplication in 0.789 seconds (process running for 1035.309)
+2026-04-01T09:09:35.359Z  INFO 123763 --- [payflow] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2026-04-01T11:35:48.114Z  INFO 123763 --- [payflow] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 80 class path changes (0 additions, 80 deletions, 0 modifications)
+2026-04-01T11:35:48.124Z  INFO 123763 --- [payflow] [Thread-5] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-01T11:35:48.132Z  INFO 123763 --- [payflow] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-01T11:35:48.149Z  INFO 123763 --- [payflow] [Thread-5] .s.m.e.c.DefaultEventPublicationRegistry : No publications outstanding!
+2026-04-01T11:35:48.152Z  INFO 123763 --- [payflow] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T11:35:48.154Z  INFO 123763 --- [payflow] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2026-04-01T11:35:48.177Z  INFO 123763 --- [payflow] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2026-04-01T11:35:48.420Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Starting PayFlowApplication using Java 25.0.1 with PID 123763 (/home/abdul/Desktop/github_projects/Pay-Flow/target/classes started by abdul in /home/abdul/Desktop/github_projects/Pay-Flow)
+2026-04-01T11:35:48.421Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-04-01T11:35:49.030Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-01T11:35:49.051Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 0 JPA repository interfaces.
+2026-04-01T11:35:49.301Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-01T11:35:49.307Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-01T11:35:49.307Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-01T11:35:49.336Z  INFO 123763 --- [payflow] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 907 ms
+2026-04-01T11:35:49.485Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-01T11:35:49.589Z  INFO 123763 --- [payflow] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-01T11:35:49.592Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-04-01T11:35:49.629Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection org.postgresql.jdbc.PgConnection@476e1fbe
+2026-04-01T11:35:49.629Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-04-01T11:35:49.635Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/payflow]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.13
+	Default catalog/schema: payflow/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-01T11:35:49.731Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-01T11:35:49.753Z  INFO 123763 --- [payflow] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T11:35:50.538Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-01T11:35:50.554Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Started PayFlowApplication in 2.257 seconds (process running for 9810.506)
+2026-04-01T11:35:50.566Z  INFO 123763 --- [payflow] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+   MailSenderAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.mail.internet.MimeMessage', 'jakarta.activation.MimeType', 'org.springframework.mail.MailSender' (OnClassCondition)
+      - AnyNestedCondition 1 matched 1 did not; NestedCondition on MailSenderAutoConfiguration.MailSenderCondition.JndiNameProperty @ConditionalOnProperty (spring.mail.jndi-name) did not find property 'spring.mail.jndi-name'; NestedCondition on MailSenderAutoConfiguration.MailSenderCondition.HostProperty @ConditionalOnProperty (spring.mail.host) matched (MailSenderAutoConfiguration.MailSenderCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.mail.MailSender; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MailSenderPropertiesConfiguration#mailSender matched:
+      - @ConditionalOnMissingBean (types: org.springframework.mail.javamail.JavaMailSender; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ServletWebSecurityAutoConfiguration.EnableWebSecurityConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity' (OnClassCondition)
+      - @ConditionalOnMissingBean (names: springSecurityFilterChain; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ServletWebSecurityAutoConfiguration.SecurityFilterChainConfiguration matched:
+      - AllNestedConditions 2 matched 0 did not; NestedCondition on DefaultWebSecurityCondition.Beans @ConditionalOnMissingBean (types: org.springframework.security.web.SecurityFilterChain; SearchStrategy: all) did not find any beans; NestedCondition on DefaultWebSecurityCondition.Classes @ConditionalOnClass found required classes 'org.springframework.security.web.SecurityFilterChain', 'org.springframework.security.config.annotation.web.builders.HttpSecurity' (DefaultWebSecurityCondition)
+
+   TaskExecutorConfigurations.AsyncConfigurerConfiguration matched:
+      - @ConditionalOnMissingBean (types: org.springframework.scheduling.annotation.AsyncConfigurer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration matched:
+      - AnyNestedCondition 1 matched 1 did not; NestedCondition on TaskExecutorConfigurations.OnExecutorCondition.ModelCondition @ConditionalOnProperty (spring.task.execution.mode=force) did not find property 'spring.task.execution.mode'; NestedCondition on TaskExecutorConfigurations.OnExecutorCondition.ExecutorBeanCondition @ConditionalOnMissingBean (types: java.util.concurrent.Executor; SearchStrategy: all) did not find any beans (TaskExecutorConfigurations.OnExecutorCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutorVirtualThreads matched:
+      - @ConditionalOnThreading found VIRTUAL (OnThreadingCondition)
+
+
+Negative matches:
+-----------------
+
+   TaskExecutorConfigurations.AsyncConfigurerWrapperConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.scheduling.annotation.AsyncConfigurer; SearchStrategy: all) did not find any beans of type org.springframework.scheduling.annotation.AsyncConfigurer (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutor:
+      Did not match:
+         - @ConditionalOnThreading did not find PLATFORM (OnThreadingCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2026-04-01T11:35:51.689Z  INFO 123763 --- [payflow] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 80 class path changes (80 additions, 0 deletions, 0 modifications)
+2026-04-01T11:35:51.693Z  INFO 123763 --- [payflow] [Thread-9] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-01T11:35:51.695Z  INFO 123763 --- [payflow] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-01T11:35:51.705Z  INFO 123763 --- [payflow] [Thread-9] .s.m.e.c.DefaultEventPublicationRegistry : No publications outstanding!
+2026-04-01T11:35:51.706Z  INFO 123763 --- [payflow] [Thread-9] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T11:35:51.707Z  INFO 123763 --- [payflow] [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2026-04-01T11:35:51.720Z  INFO 123763 --- [payflow] [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2026-04-01T11:35:51.832Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Starting PayFlowApplication using Java 25.0.1 with PID 123763 (/home/abdul/Desktop/github_projects/Pay-Flow/target/classes started by abdul in /home/abdul/Desktop/github_projects/Pay-Flow)
+2026-04-01T11:35:51.832Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-04-01T11:35:51.992Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-01T11:35:52.026Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32 ms. Found 6 JPA repository interfaces.
+2026-04-01T11:35:52.135Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-01T11:35:52.136Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-01T11:35:52.136Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-01T11:35:52.144Z  INFO 123763 --- [payflow] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 310 ms
+2026-04-01T11:35:52.204Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-01T11:35:52.239Z  INFO 123763 --- [payflow] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-01T11:35:52.241Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-04-01T11:35:52.283Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection org.postgresql.jdbc.PgConnection@52bf244b
+2026-04-01T11:35:52.284Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-04-01T11:35:52.292Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/payflow]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.13
+	Default catalog/schema: payflow/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-01T11:35:52.579Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-01T11:35:52.621Z  INFO 123763 --- [payflow] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T11:35:53.112Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-01T11:35:53.118Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Started PayFlowApplication in 1.316 seconds (process running for 9813.069)
+2026-04-01T11:35:53.120Z  INFO 123763 --- [payflow] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+    None
+
+
+Negative matches:
+-----------------
+
+   MailSenderAutoConfiguration:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.mail.MailSender; SearchStrategy: all) found beans of type 'org.springframework.mail.MailSender' javaMailSender (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required classes 'jakarta.mail.internet.MimeMessage', 'jakarta.activation.MimeType', 'org.springframework.mail.MailSender' (OnClassCondition)
+         - AnyNestedCondition 1 matched 1 did not; NestedCondition on MailSenderAutoConfiguration.MailSenderCondition.JndiNameProperty @ConditionalOnProperty (spring.mail.jndi-name) did not find property 'spring.mail.jndi-name'; NestedCondition on MailSenderAutoConfiguration.MailSenderCondition.HostProperty @ConditionalOnProperty (spring.mail.host) matched (MailSenderAutoConfiguration.MailSenderCondition)
+
+   ServletWebSecurityAutoConfiguration.EnableWebSecurityConfiguration:
+      Did not match:
+         - @ConditionalOnMissingBean (names: springSecurityFilterChain; SearchStrategy: all) found beans named springSecurityFilterChain (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity' (OnClassCondition)
+
+   ServletWebSecurityAutoConfiguration.SecurityFilterChainConfiguration:
+      Did not match:
+         - AllNestedConditions 1 matched 1 did not; NestedCondition on DefaultWebSecurityCondition.Beans @ConditionalOnMissingBean (types: org.springframework.security.web.SecurityFilterChain; SearchStrategy: all) found beans of type 'org.springframework.security.web.SecurityFilterChain' filterChain; NestedCondition on DefaultWebSecurityCondition.Classes @ConditionalOnClass found required classes 'org.springframework.security.web.SecurityFilterChain', 'org.springframework.security.config.annotation.web.builders.HttpSecurity' (DefaultWebSecurityCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration:
+      Did not match:
+         - AnyNestedCondition 0 matched 2 did not; NestedCondition on TaskExecutorConfigurations.OnExecutorCondition.ModelCondition @ConditionalOnProperty (spring.task.execution.mode=force) did not find property 'spring.task.execution.mode'; NestedCondition on TaskExecutorConfigurations.OnExecutorCondition.ExecutorBeanCondition @ConditionalOnMissingBean (types: java.util.concurrent.Executor; SearchStrategy: all) found beans of type 'java.util.concurrent.Executor' taskExecutor (TaskExecutorConfigurations.OnExecutorCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2026-04-01T15:21:05.529Z  INFO 123763 --- [payflow] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 3 deletions, 0 modifications)
+2026-04-01T15:21:05.535Z  INFO 123763 --- [payflow] [Thread-13] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-01T15:21:05.536Z  INFO 123763 --- [payflow] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-01T15:21:05.557Z  INFO 123763 --- [payflow] [Thread-13] .s.m.e.c.DefaultEventPublicationRegistry : No publications outstanding!
+2026-04-01T15:21:05.562Z  INFO 123763 --- [payflow] [Thread-13] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T15:21:05.564Z  INFO 123763 --- [payflow] [Thread-13] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
+2026-04-01T15:21:05.573Z  INFO 123763 --- [payflow] [Thread-13] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
+2026-04-01T15:21:05.867Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Starting PayFlowApplication using Java 25.0.1 with PID 123763 (/home/abdul/Desktop/github_projects/Pay-Flow/target/classes started by abdul in /home/abdul/Desktop/github_projects/Pay-Flow)
+2026-04-01T15:21:05.868Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-04-01T15:21:06.515Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-01T15:21:06.559Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 40 ms. Found 6 JPA repository interfaces.
+2026-04-01T15:21:06.971Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-01T15:21:06.977Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-01T15:21:06.977Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-01T15:21:07.000Z  INFO 123763 --- [payflow] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1111 ms
+2026-04-01T15:21:07.115Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-01T15:21:07.221Z  INFO 123763 --- [payflow] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-01T15:21:07.224Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2026-04-01T15:21:07.278Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection org.postgresql.jdbc.PgConnection@9b7e4cf
+2026-04-01T15:21:07.279Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2026-04-01T15:21:07.292Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/payflow]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.13
+	Default catalog/schema: payflow/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-01T15:21:07.625Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-01T15:21:07.675Z  INFO 123763 --- [payflow] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T15:21:08.461Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-01T15:21:08.467Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Started PayFlowApplication in 2.773 seconds (process running for 23328.418)
+2026-04-01T15:21:08.469Z  INFO 123763 --- [payflow] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2026-04-01T15:21:09.831Z  INFO 123763 --- [payflow] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (3 additions, 0 deletions, 0 modifications)
+2026-04-01T15:21:09.838Z  INFO 123763 --- [payflow] [Thread-17] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-01T15:21:09.844Z  INFO 123763 --- [payflow] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-01T15:21:09.852Z  INFO 123763 --- [payflow] [Thread-17] .s.m.e.c.DefaultEventPublicationRegistry : No publications outstanding!
+2026-04-01T15:21:09.854Z  INFO 123763 --- [payflow] [Thread-17] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T15:21:09.855Z  INFO 123763 --- [payflow] [Thread-17] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown initiated...
+2026-04-01T15:21:09.862Z  INFO 123763 --- [payflow] [Thread-17] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown completed.
+2026-04-01T15:21:09.967Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Starting PayFlowApplication using Java 25.0.1 with PID 123763 (/home/abdul/Desktop/github_projects/Pay-Flow/target/classes started by abdul in /home/abdul/Desktop/github_projects/Pay-Flow)
+2026-04-01T15:21:09.968Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-04-01T15:21:10.138Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-01T15:21:10.162Z  INFO 123763 --- [payflow] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22 ms. Found 6 JPA repository interfaces.
+2026-04-01T15:21:10.290Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-01T15:21:10.291Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-01T15:21:10.291Z  INFO 123763 --- [payflow] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-01T15:21:10.302Z  INFO 123763 --- [payflow] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 332 ms
+2026-04-01T15:21:10.341Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-01T15:21:10.360Z  INFO 123763 --- [payflow] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-01T15:21:10.361Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Starting...
+2026-04-01T15:21:10.394Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-6 - Added connection org.postgresql.jdbc.PgConnection@35f5099a
+2026-04-01T15:21:10.394Z  INFO 123763 --- [payflow] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Start completed.
+2026-04-01T15:21:10.400Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/payflow]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.13
+	Default catalog/schema: payflow/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-01T15:21:10.537Z  INFO 123763 --- [payflow] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-01T15:21:10.573Z  INFO 123763 --- [payflow] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01T15:21:11.061Z  INFO 123763 --- [payflow] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-01T15:21:11.065Z  INFO 123763 --- [payflow] [restartedMain] com.example.payflow.PayFlowApplication   : Started PayFlowApplication in 1.122 seconds (process running for 23331.017)
+2026-04-01T15:21:11.067Z  INFO 123763 --- [payflow] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged

@@ -294,7 +294,7 @@ Current suite status:
 - API key recovery is not implemented yet.
 - Swagger/OpenAPI is intentionally not included.
 - Audit payloads are stored as serialized JSON.
-- Ledger lookup is still correlation-id based and is not yet merchant-scoped at the controller/service level.
+- Ledger lookup is merchant-scoped and only returns entries for the authenticated merchant.
 - Development defaults remain in config and should be removed before deployment.
 
 ## Next Good Improvements

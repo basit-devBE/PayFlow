@@ -77,14 +77,28 @@ class LedgerServiceTest {
 
     @Test
     void findByCorrelationId_returnsMappedResponses() {
+        var merchantId = UUID.randomUUID();
         var correlationId = UUID.randomUUID();
-        var entry = JournalEntry.post(correlationId, UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), new BigDecimal("150.00"), "USD");
-        when(journalEntryRepository.findByCorrelationIdOrderByPostedAtAsc(correlationId)).thenReturn(List.of(entry));
+        var entry = JournalEntry.post(correlationId, UUID.randomUUID(), merchantId, UUID.randomUUID(), new BigDecimal("150.00"), "USD");
+        when(journalEntryRepository.findByCorrelationIdAndDebitAccountOrderByPostedAtAsc(correlationId, "merchant:" + merchantId))
+                .thenReturn(List.of(entry));
 
-        var responses = ledgerService.findByCorrelationId(correlationId);
+        var responses = ledgerService.findByCorrelationId(merchantId, correlationId);
 
         assertThat(responses).hasSize(1);
         assertThat(responses.getFirst().id()).isEqualTo(entry.getId());
         assertThat(responses.getFirst().correlationId()).isEqualTo(correlationId);
+    }
+
+    @Test
+    void findByCorrelationId_returnsOnlyEntriesForMerchant() {
+        var merchantId = UUID.randomUUID();
+        var correlationId = UUID.randomUUID();
+        when(journalEntryRepository.findByCorrelationIdAndDebitAccountOrderByPostedAtAsc(correlationId, "merchant:" + merchantId))
+                .thenReturn(List.of());
+
+        var responses = ledgerService.findByCorrelationId(merchantId, correlationId);
+
+        assertThat(responses).isEmpty();
     }
 }

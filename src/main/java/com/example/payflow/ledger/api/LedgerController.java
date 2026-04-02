@@ -3,9 +3,11 @@ package com.example.payflow.ledger.api;
 import com.example.payflow.ledger.api.response.JournalEntryResponse;
 import com.example.payflow.ledger.service.LedgerService;
 import com.example.payflow.shared.ApiResponse;
+import com.example.payflow.shared.MerchantPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +24,10 @@ public class LedgerController {
     private final LedgerService ledgerService;
 
     @GetMapping("/journal/{correlationId}")
-    ResponseEntity<ApiResponse<List<JournalEntryResponse>>> findByCorrelationId(@PathVariable UUID correlationId) {
-        var entries = ledgerService.findByCorrelationId(correlationId);
+    ResponseEntity<ApiResponse<List<JournalEntryResponse>>> findByCorrelationId(
+            @AuthenticationPrincipal MerchantPrincipal principal,
+            @PathVariable UUID correlationId) {
+        var entries = ledgerService.findByCorrelationId(principal.merchantId(), correlationId);
         return ResponseEntity.ok(ApiResponse.success(entries, "Ledger entries retrieved successfully", HttpStatus.OK));
     }
 }
