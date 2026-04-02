@@ -1,6 +1,5 @@
 package com.example.payflow.payments;
 
-import com.example.payflow.audit.service.AuditEventResponse;
 import com.example.payflow.merchant.service.MerchantLookupService;
 import com.example.payflow.payments.api.response.PaymentResponse;
 import com.example.payflow.payments.service.PaymentService;
@@ -18,12 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -74,7 +71,7 @@ class PaymentControllerTest {
 
     @Test
     void list_noFilter_returns200() throws Exception {
-        when(paymentService.findByMerchant(MERCHANT_ID, null)).thenReturn(List.of(sampleResponse()));
+        when(paymentService.findByMerchant(MERCHANT_ID, null)).thenReturn(java.util.List.of(sampleResponse()));
 
         mockMvc.perform(get("/api/v1/payments")
                         .header("X-Merchant-ID", MERCHANT_ID.toString())
@@ -86,7 +83,7 @@ class PaymentControllerTest {
 
     @Test
     void list_withStatusFilter_returns200() throws Exception {
-        when(paymentService.findByMerchant(MERCHANT_ID, PaymentStatus.PENDING)).thenReturn(List.of(sampleResponse()));
+        when(paymentService.findByMerchant(MERCHANT_ID, PaymentStatus.PENDING)).thenReturn(java.util.List.of(sampleResponse()));
 
         mockMvc.perform(get("/api/v1/payments")
                         .header("X-Merchant-ID", MERCHANT_ID.toString())
@@ -99,7 +96,7 @@ class PaymentControllerTest {
 
     @Test
     void submit_validRequest_returns201() throws Exception {
-        when(paymentService.submit(eq(MERCHANT_ID), any())).thenReturn(sampleResponse());
+        when(paymentService.submit(any(), any(), any())).thenReturn(sampleResponse());
 
         mockMvc.perform(post("/api/v1/payments")
                         .header("X-Merchant-ID", MERCHANT_ID.toString())
@@ -125,7 +122,7 @@ class PaymentControllerTest {
 
     @Test
     void submit_duplicateIdempotencyKey_returns201WithExistingPayment() throws Exception {
-        when(paymentService.submit(eq(MERCHANT_ID), any())).thenReturn(sampleResponse());
+        when(paymentService.submit(any(), any(), any())).thenReturn(sampleResponse());
 
         mockMvc.perform(post("/api/v1/payments")
                         .header("X-Merchant-ID", MERCHANT_ID.toString())
@@ -164,37 +161,6 @@ class PaymentControllerTest {
         when(paymentService.findById(MERCHANT_ID, PAYMENT_ID)).thenThrow(new PaymentNotFoundException(PAYMENT_ID));
 
         mockMvc.perform(get("/api/v1/payments/{id}", PAYMENT_ID)
-                        .header("X-Merchant-ID", MERCHANT_ID.toString())
-                        .header("X-Timestamp", TIMESTAMP)
-                        .header("X-Signature", SIGNATURE))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    void findEvents_existingPayment_returns200() throws Exception {
-        when(paymentService.findEvents(MERCHANT_ID, PAYMENT_ID)).thenReturn(List.of(
-                new AuditEventResponse(
-                        UUID.randomUUID(),
-                        UUID.randomUUID(),
-                        "Payment.Transaction.Initiated",
-                        "{\"amount\":150.00}",
-                        Instant.now()
-                )
-        ));
-
-        mockMvc.perform(get("/api/v1/payments/{id}/events", PAYMENT_ID)
-                        .header("X-Merchant-ID", MERCHANT_ID.toString())
-                        .header("X-Timestamp", TIMESTAMP)
-                        .header("X-Signature", SIGNATURE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].eventType").value("Payment.Transaction.Initiated"));
-    }
-
-    @Test
-    void findEvents_nonExistentPayment_returns404() throws Exception {
-        when(paymentService.findEvents(MERCHANT_ID, PAYMENT_ID)).thenThrow(new PaymentNotFoundException(PAYMENT_ID));
-
-        mockMvc.perform(get("/api/v1/payments/{id}/events", PAYMENT_ID)
                         .header("X-Merchant-ID", MERCHANT_ID.toString())
                         .header("X-Timestamp", TIMESTAMP)
                         .header("X-Signature", SIGNATURE))

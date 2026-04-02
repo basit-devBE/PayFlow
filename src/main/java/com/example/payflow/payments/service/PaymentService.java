@@ -1,7 +1,6 @@
 package com.example.payflow.payments.service;
 
-import com.example.payflow.audit.service.AuditEventResponse;
-import com.example.payflow.audit.service.AuditService;
+import com.example.payflow.fraud.domain.FraudDecision;
 import com.example.payflow.payments.PaymentNotFoundException;
 import com.example.payflow.payments.api.request.SubmitPaymentRequest;
 import com.example.payflow.payments.api.response.PaymentResponse;
@@ -9,12 +8,15 @@ import com.example.payflow.payments.domain.Payment;
 import com.example.payflow.payments.domain.PaymentMethod;
 import com.example.payflow.payments.infra.PaymentRepository;
 import com.example.payflow.shared.events.DomainEventPublisher;
+import com.example.payflow.shared.events.PaymentTransactionAuthorized;
+import com.example.payflow.shared.events.PaymentTransactionDeclined;
 import com.example.payflow.shared.events.PaymentTransactionInitiated;
 import com.example.payflow.shared.PaymentStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,9 +27,8 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final DomainEventPublisher eventPublisher;
-    private final AuditService auditService;
 
-    public PaymentResponse submit(UUID merchantId, SubmitPaymentRequest request) {
+    public PaymentResponse submit(UUID merchantId, String merchantEmail, SubmitPaymentRequest request) {
         var existing = paymentRepository.findByIdempotencyKey(request.idempotencyKey());
         if (existing.isPresent()) {
             return toResponse(existing.get());
@@ -38,6 +39,7 @@ public class PaymentService {
                 UUID.randomUUID(),
                 request.idempotencyKey(),
                 merchantId,
+                merchantEmail,
                 request.payeeAccountId(),
                 request.amount(),
                 request.currency(),
@@ -49,6 +51,7 @@ public class PaymentService {
         eventPublisher.publish(new PaymentTransactionInitiated(
                 payment.getId(),
                 payment.getMerchantId(),
+                payment.getMerchantEmail(),
                 payment.getCorrelationId().toString(),
                 payment.getAmount(),
                 payment.getCurrency()
@@ -72,33 +75,28 @@ public class PaymentService {
                 .orElseThrow(() -> new PaymentNotFoundException(id));
     }
 
-    @Transactional(readOnly = true)
-    public List<AuditEventResponse> findEvents(UUID merchantId, UUID paymentId) {
-        paymentRepository.findByIdAndMerchantId(paymentId, merchantId)
-                .orElseThrow(() -> new PaymentNotFoundException(paymentId));
-        return auditService.findByMerchantIdAndPaymentId(merchantId, paymentId);
-    }
-
     @Transactional
     public void processFraudAssessment(UUID paymentId, String decision, String correlationId) {
         var payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new PaymentNotFoundException(paymentId));
+        var fraudDecision = FraudDecision.valueOf(decision.trim().toUpperCase(Locale.ROOT));
         
-        if ("APPROVE".equals(decision)) {
+        if (fraudDecision == FraudDecision.APPROVE) {
             payment.authorise();
             paymentRepository.save(payment);
-            eventPublisher.publish(new com.example.payflow.shared.events.PaymentTransactionAuthorized(
+            eventPublisher.publish(new PaymentTransactionAuthorized(
                     correlationId,
                     payment.getId(),
                     payment.getMerchantId(),
+                    payment.getMerchantEmail(),
                     payment.getPayeeAccountId(),
                     payment.getAmount(),
                     payment.getCurrency()));
         } else {
             payment.decline();
             paymentRepository.save(payment);
-            eventPublisher.publish(new com.example.payflow.shared.events.PaymentTransactionDeclined(
-                    correlationId, payment.getId(), payment.getMerchantId(), "Failed fraud assessment"));
+            eventPublisher.publish(new PaymentTransactionDeclined(
+                    correlationId, payment.getId(), payment.getMerchantId(), payment.getMerchantEmail(), "Failed fraud assessment"));
         }
     }
 

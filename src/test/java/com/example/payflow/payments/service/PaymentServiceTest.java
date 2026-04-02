@@ -1,5 +1,6 @@
 package com.example.payflow.payments.service;
 
+import com.example.payflow.fraud.domain.FraudDecision;
 import com.example.payflow.payments.PaymentNotFoundException;
 import com.example.payflow.payments.api.request.PaymentMethodRequest;
 import com.example.payflow.payments.api.request.SubmitPaymentRequest;
@@ -47,7 +48,7 @@ class PaymentServiceTest {
         var existingPayment = payment();
         when(paymentRepository.findByIdempotencyKey("idem-123")).thenReturn(Optional.of(existingPayment));
 
-        var response = paymentService.submit(existingPayment.getMerchantId(), submitPaymentRequest());
+        var response = paymentService.submit(existingPayment.getMerchantId(), existingPayment.getMerchantEmail(), submitPaymentRequest());
 
         assertThat(response.id()).isEqualTo(existingPayment.getId());
         verify(paymentRepository, never()).save(any(Payment.class));
@@ -60,9 +61,10 @@ class PaymentServiceTest {
         when(paymentRepository.save(any(Payment.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         var merchantId = UUID.randomUUID();
+        var merchantEmail = "merchant@example.com";
         var request = submitPaymentRequest();
 
-        var response = paymentService.submit(merchantId, request);
+        var response = paymentService.submit(merchantId, merchantEmail, request);
 
         var paymentCaptor = ArgumentCaptor.forClass(Payment.class);
         verify(paymentRepository).save(paymentCaptor.capture());
@@ -79,6 +81,7 @@ class PaymentServiceTest {
 
         assertThat(event.getPaymentId()).isEqualTo(savedPayment.getId());
         assertThat(event.getMerchantId()).isEqualTo(merchantId);
+        assertThat(event.getMerchantEmail()).isEqualTo(merchantEmail);
         assertThat(event.getAmount()).isEqualByComparingTo("150.00");
         assertThat(event.getCurrency()).isEqualTo("USD");
         assertThat(response.id()).isEqualTo(savedPayment.getId());
@@ -90,7 +93,7 @@ class PaymentServiceTest {
         var payment = payment();
         when(paymentRepository.findById(payment.getId())).thenReturn(Optional.of(payment));
 
-        paymentService.processFraudAssessment(payment.getId(), "APPROVE", payment.getCorrelationId().toString());
+        paymentService.processFraudAssessment(payment.getId(), FraudDecision.APPROVE.name(), payment.getCorrelationId().toString());
 
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.AUTHORISED);
         verify(paymentRepository).save(payment);
@@ -102,6 +105,7 @@ class PaymentServiceTest {
         assertThat(event.getCorrelationId()).isEqualTo(payment.getCorrelationId().toString());
         assertThat(event.getPaymentId()).isEqualTo(payment.getId());
         assertThat(event.getMerchantId()).isEqualTo(payment.getMerchantId());
+        assertThat(event.getMerchantEmail()).isEqualTo(payment.getMerchantEmail());
         assertThat(event.getPayeeAccountId()).isEqualTo(payment.getPayeeAccountId());
         assertThat(event.getAmount()).isEqualByComparingTo(payment.getAmount());
         assertThat(event.getCurrency()).isEqualTo(payment.getCurrency());
@@ -112,7 +116,7 @@ class PaymentServiceTest {
         var payment = payment();
         when(paymentRepository.findById(payment.getId())).thenReturn(Optional.of(payment));
 
-        paymentService.processFraudAssessment(payment.getId(), "DECLINE", payment.getCorrelationId().toString());
+        paymentService.processFraudAssessment(payment.getId(), FraudDecision.DECLINE.name(), payment.getCorrelationId().toString());
 
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.DECLINED);
         verify(paymentRepository).save(payment);
@@ -124,6 +128,7 @@ class PaymentServiceTest {
         assertThat(event.getCorrelationId()).isEqualTo(payment.getCorrelationId().toString());
         assertThat(event.getPaymentId()).isEqualTo(payment.getId());
         assertThat(event.getMerchantId()).isEqualTo(payment.getMerchantId());
+        assertThat(event.getMerchantEmail()).isEqualTo(payment.getMerchantEmail());
         assertThat(event.getReason()).isEqualTo("Failed fraud assessment");
     }
 
@@ -132,7 +137,7 @@ class PaymentServiceTest {
         var paymentId = UUID.randomUUID();
         when(paymentRepository.findById(paymentId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> paymentService.processFraudAssessment(paymentId, "APPROVE", UUID.randomUUID().toString()))
+        assertThatThrownBy(() -> paymentService.processFraudAssessment(paymentId, FraudDecision.APPROVE.name(), UUID.randomUUID().toString()))
                 .isInstanceOf(PaymentNotFoundException.class);
     }
 
@@ -163,6 +168,7 @@ class PaymentServiceTest {
                 UUID.randomUUID(),
                 "idem-123",
                 UUID.randomUUID(),
+                "merchant@example.com",
                 UUID.randomUUID(),
                 new BigDecimal("150.00"),
                 "USD",

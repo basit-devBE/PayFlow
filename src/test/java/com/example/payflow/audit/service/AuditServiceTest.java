@@ -39,6 +39,7 @@ class AuditServiceTest {
                 correlationId.toString(),
                 paymentId,
                 merchantId,
+                "merchant@example.com",
                 payeeAccountId,
                 new BigDecimal("150.00"),
                 "USD"

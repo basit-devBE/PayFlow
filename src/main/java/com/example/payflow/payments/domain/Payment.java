@@ -29,6 +29,9 @@ public class Payment {
     @Column(nullable = false)
     private UUID merchantId;
 
+    @Column(nullable = false, length = 255)
+    private String merchantEmail;
+
     @Column(nullable = false)
     private UUID payeeAccountId;
 
@@ -55,12 +58,14 @@ public class Payment {
     private Instant updatedAt;
 
     public static Payment create(UUID correlationId, String idempotencyKey, UUID merchantId,
+                                 String merchantEmail,
                                  UUID payeeAccountId, BigDecimal amount, String currency,
                                  PaymentMethod paymentMethod) {
         var payment = new Payment();
         payment.correlationId = correlationId;
         payment.idempotencyKey = idempotencyKey;
         payment.merchantId = merchantId;
+        payment.merchantEmail = merchantEmail;
         payment.payeeAccountId = payeeAccountId;
         payment.amount = amount;
         payment.currency = currency;

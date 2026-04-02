@@ -1,6 +1,5 @@
 package com.example.payflow.payments.api;
 
-import com.example.payflow.audit.service.AuditEventResponse;
 import com.example.payflow.payments.api.request.SubmitPaymentRequest;
 import com.example.payflow.payments.api.response.PaymentResponse;
 import com.example.payflow.payments.service.PaymentService;
@@ -28,7 +27,7 @@ public class PaymentController {
     ResponseEntity<ApiResponse<PaymentResponse>> submit(
             @AuthenticationPrincipal MerchantPrincipal principal,
             @Valid @RequestBody SubmitPaymentRequest request) {
-        var response = paymentService.submit(principal.merchantId(), request);
+        var response = paymentService.submit(principal.merchantId(), principal.email(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response, "Payment submitted successfully", HttpStatus.CREATED));
     }
 
@@ -46,13 +45,5 @@ public class PaymentController {
             @PathVariable UUID id) {
         var response = paymentService.findById(principal.merchantId(), id);
         return ResponseEntity.ok(ApiResponse.success(response, "Payment retrieved successfully", HttpStatus.OK));
-    }
-
-    @GetMapping("/{id}/events")
-    ResponseEntity<ApiResponse<List<AuditEventResponse>>> findEvents(
-            @AuthenticationPrincipal MerchantPrincipal principal,
-            @PathVariable UUID id) {
-        var events = paymentService.findEvents(principal.merchantId(), id);
-        return ResponseEntity.ok(ApiResponse.success(events, "Payment events retrieved successfully", HttpStatus.OK));
     }
 }

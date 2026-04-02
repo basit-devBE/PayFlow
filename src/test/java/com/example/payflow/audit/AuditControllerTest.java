@@ -30,6 +30,7 @@ class AuditControllerTest {
     private static final String TIMESTAMP = String.valueOf(Instant.now().getEpochSecond());
     private static final String SIGNATURE = "test-signature";
     private static final UUID MERCHANT_ID = UUID.randomUUID();
+    private static final UUID PAYMENT_ID = UUID.randomUUID();
 
     @Autowired
     MockMvc mockMvc;
@@ -64,6 +65,26 @@ class AuditControllerTest {
         ));
 
         mockMvc.perform(get("/api/v1/audit/events")
+                        .header("X-Merchant-ID", MERCHANT_ID.toString())
+                        .header("X-Timestamp", TIMESTAMP)
+                        .header("X-Signature", SIGNATURE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].eventType").value("Payment.Transaction.Initiated"));
+    }
+
+    @Test
+    void findPaymentEvents_returnsPaymentAuditEvents() throws Exception {
+        when(auditService.findByMerchantIdAndPaymentId(MERCHANT_ID, PAYMENT_ID)).thenReturn(List.of(
+                new AuditEventResponse(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "Payment.Transaction.Initiated",
+                        "{\"paymentId\":\"abc\"}",
+                        Instant.now()
+                )
+        ));
+
+        mockMvc.perform(get("/api/v1/payments/{paymentId}/events", PAYMENT_ID)
                         .header("X-Merchant-ID", MERCHANT_ID.toString())
                         .header("X-Timestamp", TIMESTAMP)
                         .header("X-Signature", SIGNATURE))

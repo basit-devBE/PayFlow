@@ -83,6 +83,7 @@ class FraudAssessmentListenerTest {
         return new PaymentTransactionInitiated(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
+                "merchant@example.com",
                 UUID.randomUUID().toString(),
                 amount,
                 "USD"

@@ -26,6 +26,7 @@ class AuditEventListenerTest {
         var event = new PaymentTransactionInitiated(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
+                "merchant@example.com",
                 UUID.randomUUID().toString(),
                 new BigDecimal("150.00"),
                 "USD"
